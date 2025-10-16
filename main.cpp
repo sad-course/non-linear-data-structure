@@ -2,23 +2,36 @@
 #include "BSTree.h"
 
 int main() {
-    BSTree<int> bst;
+    BSTree<int> bst, bst_strictly, bst_not_strictly;
 
-    bst.insertNode(100);
-    bst.insertNode(50);
-    bst.insertNode(60);
-    bst.insertNode(20);
-    bst.insertNode(5);
+    bst_strictly.insertNode(100);
+    bst_strictly.insertNode(50);
+    bst_strictly.insertNode(61);
+    bst_strictly.insertNode(20);
+    bst_strictly.insertNode(102);
+    bst_strictly.insertNode(101);
+    bst_strictly.insertNode(103);
+    bst_strictly.insertNode(105);
+
+    bst_not_strictly.insertNode(100);
+    bst_not_strictly.insertNode(50);
+    bst_not_strictly.insertNode(61);
+    bst_not_strictly.insertNode(20);
+    bst_not_strictly.insertNode(102);
+    bst_not_strictly.insertNode(101);
+    bst_not_strictly.insertNode(103);
+    bst_not_strictly.insertNode(105);
 
 
-    bst.insertNode(10);
-    bst.insertNode(61);
-    bst.insertNode(62);
+    if (bst_not_strictly.isStrictlyBSTree()) {
+        std::cout << "É estritamente binário" << std::endl;
+    }else {
+        std::cout << "Não é estritamente binário" << std::endl;
+    }
 
-    bst.insertNode(104);
-    bst.insertNode(103);
-    bst.insertNode(102);
-
-    bst.deleteNode(100);
+    bst_not_strictly.inorderTraversal();
+    bool isSimilar = bst_not_strictly.isBSTresSimilarAndValues(&bst_strictly);
+    std::cout << " " << std::endl;
+    printf("Similar? %s", (isSimilar ? "yessy" : "namm"));
     return 0;
 }
