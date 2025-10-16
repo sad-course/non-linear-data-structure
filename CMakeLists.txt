@@ -6,5 +6,5 @@ set(CMAKE_CXX_STANDARD 20)
 include_directories(headers)
 
 add_executable(non_linear_data_structure main.cpp
-        headers/Node.h
-        headers/BSTree.h)
+        headers/BSTree.h
+        headers/BTree.h)

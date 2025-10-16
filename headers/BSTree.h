@@ -2,21 +2,34 @@
 // Created by mirla on 06/10/2025.
 //
 
-#ifndef NON_LINEAR_DATA_STRUCTURE_BTREE_H
-#define NON_LINEAR_DATA_STRUCTURE_BTREE_H
+#ifndef NON_LINEAR_DATA_STRUCTURE_BSTREE_H
+#define NON_LINEAR_DATA_STRUCTURE_BSTREE_H
 
 #include <vector>
-#include "Node.h"
+#include <stack>
+
+#include "BTree.h"
 
 template <typename T>
-class BSTree {
-protected:
-    Node<T> *root;
+class BSTree : public BTree<T> {
+private:
+    void destroy(Node<T> *rootNode) {
+        if (rootNode == nullptr) return;
 
-    void printTree() {
-        Node<T> *node = root;
+        std::stack<Node<T>*> s;
+        s.push(rootNode);
 
-    }
+        while (!s.empty()) {
+            Node<T>* node = s.top();
+            s.pop();
+
+            if (node->left) s.push(node->left);
+            if (node->right) s.push(node->right);
+
+            delete node;
+        }
+    };
+
     Node<T> *findLeftMost(Node<T> *node) {
         while (node != nullptr && node->left != nullptr) {
             node = node->left;
@@ -24,21 +37,10 @@ protected:
         return node;
     };
 
-    void inorderTraversalInternal(Node<T> *node, std::vector<T> &list) {
-        if (node == nullptr) {
-            return;
-        }
-
-        inorderTraversalInternal(node->left, list);
-
-        list.push_back(node->data);
-
-        inorderTraversalInternal(node->right, list);
-    }
-
     void insertInternal(Node<T> *node, const T& value) {
-        if (root == nullptr) {
+        if (this->root == nullptr) {
             this->root = new Node<T>(value);
+            this->incrementSize();
         }else {
             if (value == node->data) {
                 std::cout << value << " already exists\n";
@@ -47,6 +49,8 @@ protected:
             if (value < node->data) {
                 if (node->left == nullptr) {
                     node->left = new Node<T>(value);
+                    this->incrementSize();
+
                 }else {
                     insertInternal(node->left, value);
                 }
@@ -54,6 +58,7 @@ protected:
             if (value > node->data) {
                 if (node->right == nullptr) {
                     node->right = new Node<T>(value);
+                    this->incrementSize();
                 }else {
                     insertInternal(node->right, value);
                 }
@@ -92,17 +97,20 @@ protected:
 
             if (node->left == nullptr && node->right == nullptr) {
                 delete node;
+                this->decrementSize();
                 return nullptr;
             }
 
             if (node->left != nullptr && node->right == nullptr) {
                 Node<T> *temp = node->left;
                 delete node;
+                this->decrementSize();
                 return temp;
             }
             if (node->left == nullptr && node->right != nullptr) {
                 Node<T> *temp = node->right;
                 delete node;
+                this->decrementSize();
                 return temp;
             }
 
@@ -116,9 +124,9 @@ protected:
 
     int findHeightInternal(Node<T> *node) {
         if (node == nullptr) {
-            return 0;
+            return -1;
         }
-        return std::max(findHeight(node->left), findHeight(node->right)) + 1;
+        return std::max(findHeightInternal(node->left), findHeightInternal(node->right)) + 1;
     }
 
     bool verifyStrictlyBSTreeInternal(Node<T> *node) {
@@ -155,33 +163,26 @@ protected:
     }
 
 public:
-    BSTree() {
-        this->root = nullptr;
-    };
-    Node<T> *getRoot() {
-        return this->root;
-    }
-
     void insertNode(T data) {
-        insertInternal(root, data);
+        insertInternal(this->root, data);
     };
 
     void deleteNode(T data) {
-        if (root != nullptr) {
-            this->root = deleteInternal(root, data);
+        if (this->root != nullptr) {
+            this->root = deleteInternal(this->root, data);
         }
     };
 
     Node<T> *search(T data) {
-        return searchInternal(root, data);
+        return searchInternal(this->root, data);
     };
 
     int getHeight() {
-        return findHeightInternal(root);
+        return findHeightInternal(this->root);
     }
 
     bool isStrictlyBSTree() {
-        return verifyStrictlyBSTreeInternal(root);
+        return verifyStrictlyBSTreeInternal(this->root);
     }
 
     bool isBSTreeSimilar(BSTree<T> *bs_tree) {
@@ -192,14 +193,7 @@ public:
         return verifyBSTreeSimilarity(this->root, bs_tree->getRoot(), true);
     }
 
-    void inorderTraversal() {
-        std::vector<T> valuesList;
-        inorderTraversalInternal(root, valuesList);
 
-        for (int value : valuesList) {
-            std::cout << value << " ";
-        }
-    }
 };
 
-#endif //NON_LINEAR_DATA_STRUCTURE_BTREE_H
+#endif //NON_LINEAR_DATA_STRUCTURE_BSTREE_H
