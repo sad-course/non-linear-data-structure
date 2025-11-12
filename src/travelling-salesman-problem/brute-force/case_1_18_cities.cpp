@@ -12,11 +12,12 @@
 
 
 int main() {
-    const int N=18;
+    const int N=10;
 
+    auto start = std::chrono::system_clock::now();
     const int INF = std::numeric_limits<int>::max();
     std::vector<std::vector<int>> validPaths;
-    std::vector<std::vector<int>> routes =
+    std::vector<std::vector<int>> routes_18 =
         {
         {0, 20, INF, INF, INF, INF, INF, 29, INF, INF, INF, 29, 37, INF, INF, INF, INF, INF},
         {20, 0, 25, INF, INF, INF, INF, 28, INF, INF, INF, 39, INF, INF, INF, INF, INF, INF},
@@ -36,6 +37,19 @@ int main() {
         {INF, INF, INF, INF, INF, INF, INF, INF, 43, INF, INF, 43, 19, 19, INF, 0, 26, INF},
         {INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 17, 18, 26, 0, 15},
         {INF, INF, INF, INF, INF, INF, INF, INF, INF, INF, 36, INF, INF, INF, 21, INF, 15, 0}
+    };
+
+    std::vector<std::vector<int>> routes = {
+        {  0,  15,  INF,  30,  INF,  10,  INF,  25,  INF,  INF },
+        { 15,   0,   20,  INF,  22,  INF,  INF,  INF,  35,  INF },
+        { INF,  20,   0,   18,  INF,  14,  INF,  INF,  28,  INF },
+        { 30,  INF,  18,   0,   26,  INF,  24,  INF,  INF,  40 },
+        { INF,  22,  INF,  26,   0,   12,  INF,  20,  INF,  INF },
+        { 10,  INF,  14,  INF,  12,   0,   16,  INF,  INF,  25 },
+        { INF,  INF,  INF,  24,  INF,  16,   0,   19,  21,  INF },
+        { 25,  INF,  INF,  INF,  20,  INF,  19,   0,   17,  INF },
+        { INF,  35,   28,  INF,  INF,  INF,  21,  17,   0,   23 },
+        { INF,  INF,  INF,  40,  INF,  25,  INF,  INF,  23,   0 }
     };
 
     std::vector<int> cities;
@@ -69,7 +83,9 @@ int main() {
         }
 
         if (valid) {
-            validPaths.push_back(cities);
+            std::vector<int> path = cities;
+            path.push_back(cost);
+            validPaths.push_back(path);
             if (cost < minCost) {
                 minCost = cost;
                 bestPath = cities;
@@ -77,8 +93,11 @@ int main() {
         }
 
     } while (std::next_permutation(cities.begin(), cities.end()));
+    auto end = std::chrono::system_clock::now();
 
+    auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
+    std::cout << elapsedTime.count() << " ms" << std::endl;
     if (minCost == INF) {
         std::cout << "No valid tour exists.\n";
     } else {
@@ -87,7 +106,7 @@ int main() {
         std::cout << "-> 1\n";
     }
     if (!validPaths.empty()) {
-        std::cout << "Valid Paths:" << std::endl;
+        std::cout << "Valid Paths:" << validPaths.size() << std::endl;
         for (auto& city : validPaths) {
             std::cout << "1";
             for (size_t i = 0; i < city.size() - 1; ++i) {
