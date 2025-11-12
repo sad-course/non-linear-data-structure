@@ -42,16 +42,12 @@ int main() {
         int currentCity = 0;
         bool valid = true;
 
-        for (int nextCity : cities) {
+        for (int nextCity: cities) {
             if (routes[currentCity][nextCity] == INF) {
                 valid = false;
                 break;
             }
             cost += routes[currentCity][nextCity];
-            if (cost >= minCost) {
-                valid = false;
-                break;
-            }
             currentCity = nextCity;
         }
 
