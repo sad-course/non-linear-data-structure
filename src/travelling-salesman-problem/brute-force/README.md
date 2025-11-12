@@ -12,5 +12,6 @@ The first one will be te **Brute-force**.
 ![img.png](img.png)
 ![img_2.png](img_2.png)
 
-And for the second case with 18!=6.402.373.705.728.000
+**18!=6.402.373.705.728.000**
+
 ![img_3.png](img_3.png)
