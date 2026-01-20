@@ -11,4 +11,5 @@ add_executable(non_linear_data_structure main.cpp
         src/travelling-salesman-problem/brute-force/case_1_5_cities.cpp
         src/travelling-salesman-problem/brute-force/case_1_18_cities.cpp
         src/travelling-salesman-problem/brute-force/utils.h
+        src/travelling-salesman-problem/dijkstra.cpp
 )
