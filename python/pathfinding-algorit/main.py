@@ -10,7 +10,7 @@ WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Pathfinding - A* vs Guloso")
 
 def main():
-    current_mode = "WALL"  # WALL | START | END
+    current_mode = "WALL"
 
     grid = make_grid(ROWS, WIDTH)
     start = end = None
@@ -71,20 +71,16 @@ def main():
 
                 if event.key == pygame.K_s:
                     current_mode = "START"
-                    print("Modo: definir INÍCIO")
 
 
                 if event.key == pygame.K_e:
                     current_mode = "END"
-                    print("Modo: definir FIM")
 
                 if event.key == pygame.K_w:
                     current_mode = "WALL"
-                    print("Modo: desenhar PAREDES")
 
                 if event.key == pygame.K_TAB:
                     algorithm = "GREEDY" if algorithm == "A*" else "A*"
-                    print("Algoritmo:", algorithm)
 
                 if event.key == pygame.K_c:
                     grid = make_grid(ROWS, WIDTH)

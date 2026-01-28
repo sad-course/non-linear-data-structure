@@ -23,12 +23,21 @@ class Node:
 
     def update_neighbors(self, grid):
         self.neighbors = []
-        directions = [(1,0),(-1,0),(0,1),(0,-1)]
-        for dr, dc in directions:
-            r, c = self.row + dr, self.col + dc
+
+        directions = [
+            (1, 0, 10), (-1, 0, 10),
+            (0, 1, 10), (0, -1, 10),
+            (1, 1, 14), (1, -1, 14),
+            (-1, 1, 14), (-1, -1, 14),
+        ]
+
+        for delta_row, delta_column, cost in directions:
+            r, c = self.row + delta_row, self.col + delta_column
             if 0 <= r < len(grid) and 0 <= c < len(grid):
-                if not grid[r][c].is_wall():
-                    self.neighbors.append(grid[r][c])
+                neighbor = grid[r][c]
+                if not neighbor.is_wall():
+                    self.neighbors.append((neighbor, cost))
+
 
 def make_grid(rows, width):
     grid = []
